@@ -3,7 +3,7 @@ export interface Task {
   title: string;
   description: string;
   owner: string;
-  priority: "Low" | "Medium" | "High" | "P0";
+  priority: "Low" | "Medium" | "High";
   due: string | null;
   status: "Pending" | "In Progress" | "Completed" | "To Do" | "Blocked";
   createdAt: number;
