@@ -48,6 +48,10 @@ npm run dev
 NEXT_PUBLIC_API_URL=http://localhost:5001/api
 
 
+Deployed URLS:
+https://autonomix-assignment-uq1d.vercel.app/
+
+https://autonomix-backend-app.onrender.com
 
 
 
