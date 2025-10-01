@@ -9,6 +9,7 @@ import {
   MenuItem,
   Select,
   IconButton,
+  Avatar,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -17,6 +18,13 @@ interface TaskCardProps {
   onUpdateStatus?: (status: Task["status"]) => void;
   onDelete?: () => void;
 }
+
+const getInitials = (name: string) => {
+  return name
+    .split(" ")
+    .map((n) => n[0].toUpperCase())
+    .join("");
+};
 
 const statusColor = (status: Task["status"]) => {
   switch (status) {
@@ -68,7 +76,11 @@ const TaskCard: React.FC<TaskCardProps> = ({
           {task.description}
         </Typography>
         <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", mt: 1 }}>
-          <Chip label={`Owner: ${task.owner}`} size="small" />
+          <Chip
+            avatar={<Avatar>{getInitials(task.owner)}</Avatar>}
+            label={task.owner}
+            size="small"
+          />
           <Chip
             label={task.priority}
             size="small"
