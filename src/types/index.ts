@@ -6,4 +6,5 @@ export interface Task {
   priority: "Low" | "Medium" | "High";
   due: string;
   status: "Pending" | "In Progress" | "Completed";
+  createdAt: number;
 }

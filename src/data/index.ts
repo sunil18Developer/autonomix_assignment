@@ -1,5 +1,7 @@
 import { Task } from "@/types";
 
+const now = Date.now();
+
 const mockTasks: Task[] = [
   {
     id: "1",
@@ -10,6 +12,7 @@ const mockTasks: Task[] = [
     priority: "High",
     due: "End of this week",
     status: "In Progress",
+    createdAt: now - 1000 * 60 * 60 * 24 * 7,
   },
   {
     id: "2",
@@ -20,6 +23,7 @@ const mockTasks: Task[] = [
     priority: "High",
     due: "Next Monday AM",
     status: "Pending",
+    createdAt: now - 1000 * 60 * 60 * 24 * 5,
   },
   {
     id: "3",
@@ -30,6 +34,7 @@ const mockTasks: Task[] = [
     priority: "Medium",
     due: "Next week",
     status: "Pending",
+    createdAt: now - 1000 * 60 * 60 * 24 * 4,
   },
   {
     id: "4",
@@ -40,6 +45,7 @@ const mockTasks: Task[] = [
     priority: "Medium",
     due: "Thursday EOD",
     status: "Pending",
+    createdAt: now - 1000 * 60 * 60 * 24 * 3,
   },
   {
     id: "5",
@@ -50,6 +56,7 @@ const mockTasks: Task[] = [
     priority: "High",
     due: "Next Tuesday",
     status: "Completed",
+    createdAt: now - 1000 * 60 * 60 * 24 * 2,
   },
   {
     id: "6",
@@ -60,6 +67,7 @@ const mockTasks: Task[] = [
     priority: "Low",
     due: "Backlog",
     status: "Pending",
+    createdAt: now - 1000 * 60 * 60 * 24,
   },
   {
     id: "7",
@@ -70,15 +78,18 @@ const mockTasks: Task[] = [
     priority: "High",
     due: "Friday",
     status: "Completed",
+    createdAt: now - 1000 * 60 * 60 * 12,
   },
   {
     id: "8",
     title: "Optimize database queries",
-    description: "Reduce load times by improving SQL queries for reporting tables.",
+    description:
+      "Reduce load times by improving SQL queries for reporting tables.",
     owner: "Alex",
     priority: "Medium",
     due: "Next Wednesday",
     status: "In Progress",
+    createdAt: now,
   },
 ];
 

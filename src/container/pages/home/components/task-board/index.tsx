@@ -13,6 +13,7 @@ import {
 } from "recharts";
 import { Box, Card, Typography } from "@mui/material";
 import TaskBoardColumns from "../task-board-columns";
+import TaskFilters from "../task-filter";
 
 interface Props {
   initialTasks: Task[];
@@ -35,6 +36,12 @@ const TaskBoard: React.FC<Props> = ({ initialTasks }) => {
     priority: p,
     count: tasks.filter((task) => task.priority === p).length,
   }));
+
+  const PRIORITY_COLORS: Record<Task["priority"], string> = {
+    High: "#f44336",
+    Medium: "#ff9800",
+    Low: "#2196f3",
+  };
 
   const handleUpdatePriority = (id: string, newPriority: Task["priority"]) => {
     setTasks((prev) =>
@@ -63,6 +70,45 @@ const TaskBoard: React.FC<Props> = ({ initialTasks }) => {
     },
   ];
 
+  const [filters, setFilters] = useState({
+    status: "",
+    priority: "",
+    keyword: "",
+    sortBy: "createdAt",
+  });
+
+  const handleFilterChange = (field: string, value: string) => {
+    setFilters((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const filteredTasks = tasks
+    .filter((t) => (filters.status ? t.status === filters.status : true))
+    .filter((t) => (filters.priority ? t.priority === filters.priority : true))
+    .filter((t) =>
+      filters.keyword
+        ? t.title.toLowerCase().includes(filters.keyword.toLowerCase()) ||
+          t.description.toLowerCase().includes(filters.keyword.toLowerCase())
+        : true
+    )
+    .sort((a, b) => {
+      switch (filters.sortBy) {
+        case "priority": {
+          const order = { High: 3, Medium: 2, Low: 1 };
+          return order[b.priority] - order[a.priority];
+        }
+        case "status": {
+          const statusOrder = { Completed: 3, "In Progress": 2, Pending: 1 };
+          return (
+            statusOrder[b.status as keyof typeof statusOrder] -
+            statusOrder[a.status as keyof typeof statusOrder]
+          );
+        }
+        case "createdAt":
+        default:
+          return (b.createdAt || 0) - (a.createdAt || 0);
+      }
+    });
+
   return (
     <Box
       sx={{
@@ -76,8 +122,15 @@ const TaskBoard: React.FC<Props> = ({ initialTasks }) => {
         <Typography variant="h4" fontWeight={700} mb={3}>
           Tasks Board
         </Typography>
+        <TaskFilters
+          statusFilter={filters.status}
+          priorityFilter={filters.priority}
+          keyword={filters.keyword}
+          sortBy={filters.sortBy}
+          onChange={handleFilterChange}
+        />
         <TaskBoardColumns
-          tasks={tasks}
+          tasks={filteredTasks}
           onUpdateStatus={handleUpdateStatus}
           onUpdatePriority={handleUpdatePriority}
           onDelete={handleDelete}
@@ -117,7 +170,14 @@ const TaskBoard: React.FC<Props> = ({ initialTasks }) => {
                 <XAxis dataKey="priority" />
                 <YAxis allowDecimals={false} />
                 <Tooltip />
-                <Bar dataKey="count" fill="#1976d2" radius={[8, 8, 0, 0]} />
+                <Bar dataKey="count">
+                  {priorityData.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={PRIORITY_COLORS[entry.priority as Task["priority"]]}
+                    />
+                  ))}
+                </Bar>
               </BarChart>
             </ResponsiveContainer>
           </Box>
