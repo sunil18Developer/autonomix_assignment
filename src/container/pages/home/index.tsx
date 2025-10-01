@@ -4,33 +4,62 @@ import { Box, Button, TextField, IconButton, Typography } from "@mui/material";
 import { Brightness4, Brightness7 } from "@mui/icons-material";
 import { useThemeMode } from "@/app/theme-registry";
 import { Task } from "@/types";
-import { v4 as uuidv4 } from "uuid";
-import mockTasks from "@/data";
+// import mockTasks from "@/data";
 import TaskBoard from "./components/task-board";
+import api from "@/config/api-config";
+import { endPoints } from "@/config/api-config/end-points";
 
 export default function HomePage() {
   const [transcript, setTranscript] = useState("");
-  const [tasks, setTasks] = useState<Task[]>(mockTasks);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const { mode, toggleMode } = useThemeMode();
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!transcript.trim()) return;
 
-    const newTasks: Task[] = [
-      {
-        id: uuidv4(),
-        title: "Parse Meeting Transcript",
-        description: transcript,
-        owner: "Team",
-        priority: "High",
-        due: "Today",
-        status: "Pending",
-      },
-    ];
+    try {
+      setLoading(true);
+      const response = await api.post(endPoints.generateTasks, {
+        transcript,
+      });
 
-    setTasks((prev) => [...prev, ...newTasks]);
-    setTranscript("");
+      const newTasks: Task[] = response.data.tasks.map(
+        (t: {
+          id: unknown;
+          title: unknown;
+          description: unknown;
+          owner: unknown;
+          priority: string;
+          due: unknown;
+          status: string;
+          createdAt: unknown;
+        }) => ({
+          id: t.id,
+          title: t.title,
+          description: t.description,
+          owner: t.owner || "Unassigned",
+          priority: t.priority === "P0" ? "High" : t.priority || "Medium",
+          due: t.due || "TBD",
+          status:
+            t.status === "To Do"
+              ? "Pending"
+              : t.status === "Blocked"
+              ? "In Progress"
+              : t.status || "Pending",
+          createdAt: t.createdAt || Date.now(),
+        })
+      );
+
+      setTasks((prev: Task[]) => [...prev, ...newTasks]);
+      setTranscript("");
+    } catch (error) {
+      console.error("Error generating tasks:", error);
+      alert("Failed to generate tasks. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -66,15 +95,17 @@ export default function HomePage() {
           onChange={(e) => setTranscript(e.target.value)}
           variant="outlined"
           fullWidth
+          sx={{ overflow: "auto" }}
         />
         <Button
           type="submit"
           variant="contained"
           color="primary"
           size="large"
+          disabled={loading}
           sx={{ alignSelf: "flex-end" }}
         >
-          Generate Tasks
+          {loading ? "Generating..." : "Generate Tasks"}
         </Button>
       </Box>
 
