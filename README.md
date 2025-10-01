@@ -1,10 +1,10 @@
-# Autonomix Backend App
+# Autonomix App
 
 ## Level Completed
 Level: **2** <!-- Replace with 1, 2, or 3 depending on what you completed -->
 
 ## LLM API Used
-- **API:** OpenAI / Google GenAI / Gemini <!-- Replace with the one you used -->
+- **API:** Gemini <!-- Replace with the one you used -->
 
 ## Tech Stack
 - **Backend:** Node.js, Express, TypeScript, Prisma  
