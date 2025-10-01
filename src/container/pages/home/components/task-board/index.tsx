@@ -13,15 +13,10 @@ const COLORS = ["#FF8042", "#0088FE", "#00C49F"];
 const TaskBoard: React.FC<Props> = ({ initialTasks }) => {
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
 
-  const handleToggleComplete = (id: string) => {
+  const handleUpdateStatus = (id: string, newStatus: Task["status"]) => {
     setTasks((prev) =>
       prev.map((task) =>
-        task.id === id
-          ? {
-              ...task,
-              status: task.status === "Completed" ? "Pending" : "Completed",
-            }
-          : task
+        task.id === id ? { ...task, status: newStatus } : task
       )
     );
   };
@@ -51,7 +46,7 @@ const TaskBoard: React.FC<Props> = ({ initialTasks }) => {
         </Typography>
         <TaskBoardColumns
           tasks={tasks}
-          onToggleComplete={handleToggleComplete}
+          onUpdateStatus={handleUpdateStatus}
           onDelete={handleDelete}
         />
       </Box>

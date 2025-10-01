@@ -5,7 +5,7 @@ import TaskCard from "@/components/task-card";
 
 interface Props {
   tasks: Task[];
-  onToggleComplete: (id: string) => void;
+  onUpdateStatus: (id: string, status: Task["status"]) => void;
   onDelete: (id: string) => void;
 }
 
@@ -13,7 +13,7 @@ const STATUSES: Task["status"][] = ["Pending", "In Progress", "Completed"];
 
 const TaskBoardColumns: React.FC<Props> = ({
   tasks,
-  onToggleComplete,
+  onUpdateStatus,
   onDelete,
 }) => {
   return (
@@ -63,7 +63,9 @@ const TaskBoardColumns: React.FC<Props> = ({
                 <TaskCard
                   key={task.id}
                   task={task}
-                  onToggleComplete={() => onToggleComplete(task.id)}
+                  onUpdateStatus={(newStatus) =>
+                    onUpdateStatus(task.id, newStatus)
+                  }
                   onDelete={() => onDelete(task.id)}
                 />
               ))}

@@ -1,14 +1,24 @@
 import React from "react";
-import { Card, CardContent, Typography, Chip, Box, Button } from "@mui/material";
 import { Task } from "@/types";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Chip,
+  Box,
+  MenuItem,
+  Select,
+  IconButton,
+} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 interface TaskCardProps {
   task: Task;
-  onToggleComplete?: () => void;
+  onUpdateStatus?: (status: Task["status"]) => void;
   onDelete?: () => void;
 }
 
-const statusColor = (status: string) => {
+const statusColor = (status: Task["status"]) => {
   switch (status) {
     case "Completed":
       return "success";
@@ -32,7 +42,11 @@ const priorityColor = (priority: string) => {
   }
 };
 
-const TaskCard: React.FC<TaskCardProps> = ({ task, onToggleComplete, onDelete }) => {
+const TaskCard: React.FC<TaskCardProps> = ({
+  task,
+  onUpdateStatus,
+  onDelete,
+}) => {
   return (
     <Card
       sx={{
@@ -55,30 +69,34 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onToggleComplete, onDelete })
         </Typography>
         <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", mt: 1 }}>
           <Chip label={`Owner: ${task.owner}`} size="small" />
-          <Chip label={task.priority} size="small" color={priorityColor(task.priority)} />
+          <Chip
+            label={task.priority}
+            size="small"
+            color={priorityColor(task.priority)}
+          />
           <Chip label={task.due} size="small" />
-          <Chip label={task.status} size="small" color={statusColor(task.status)} />
+          <Chip
+            label={task.status}
+            size="small"
+            color={statusColor(task.status)}
+          />
         </Box>
-        <Box sx={{ display: "flex", gap: 1, mt: 2 }}>
-          {onToggleComplete && (
-            <Button
+        <Box sx={{ mt: 2, display: "flex", alignItems: "center", gap: 1 }}>
+          {onUpdateStatus && (
+            <Select
+              value={task.status}
               size="small"
-              variant="contained"
-              color="primary"
-              onClick={onToggleComplete}
+              onChange={(e) => onUpdateStatus(e.target.value as Task["status"])}
             >
-              {task.status === "Completed" ? "Undo" : "Complete"}
-            </Button>
+              <MenuItem value="Pending">Pending</MenuItem>
+              <MenuItem value="In Progress">In Progress</MenuItem>
+              <MenuItem value="Completed">Completed</MenuItem>
+            </Select>
           )}
           {onDelete && (
-            <Button
-              size="small"
-              variant="contained"
-              color="error"
-              onClick={onDelete}
-            >
-              Delete
-            </Button>
+            <IconButton size="small" color="error" onClick={onDelete}>
+              <DeleteIcon fontSize="small" />
+            </IconButton>
           )}
         </Box>
       </CardContent>
