@@ -11,7 +11,7 @@ const mockTasks: Task[] = [
     owner: "David",
     priority: "High",
     due: "End of this week",
-    status: "In Progress",
+    status: "InProgress",
     createdAt: now - 1000 * 60 * 60 * 24 * 7,
   },
   {
@@ -88,7 +88,7 @@ const mockTasks: Task[] = [
     owner: "Alex",
     priority: "Medium",
     due: "Next Wednesday",
-    status: "In Progress",
+    status: "InProgress",
     createdAt: now,
   },
 ];
