@@ -10,7 +10,7 @@ interface Props {
   onDelete: (id: string) => void;
 }
 
-const STATUSES: Task["status"][] = ["Pending", "In Progress", "Completed"];
+const STATUSES: Task["status"][] = ["Pending", "InProgress", "Completed"];
 
 const TaskBoardColumns: React.FC<Props> = ({
   tasks,

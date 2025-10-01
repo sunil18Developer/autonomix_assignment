@@ -62,7 +62,7 @@ const TaskBoard: React.FC<Props> = ({ initialTasks }) => {
     },
     {
       name: "In Progress",
-      value: tasks.filter((t) => t.status === "In Progress").length,
+      value: tasks.filter((t) => t.status === "InProgress").length,
     },
     {
       name: "Completed",

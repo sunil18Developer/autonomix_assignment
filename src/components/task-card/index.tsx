@@ -31,7 +31,7 @@ const statusColor = (status: Task["status"]) => {
   switch (status) {
     case "Completed":
       return "success";
-    case "In Progress":
+    case "InProgress":
       return "warning";
     default:
       return "default";
@@ -63,7 +63,7 @@ const TaskCard: React.FC<TaskCardProps> = ({
         borderLeft: `6px solid ${
           task.status === "Completed"
             ? "#4caf50"
-            : task.status === "In Progress"
+            : task.status === "InProgress"
             ? "#ff9800"
             : "#bdbdbd"
         }`,
@@ -88,7 +88,17 @@ const TaskCard: React.FC<TaskCardProps> = ({
             size="small"
             color={priorityColor(task.priority)}
           />
-          <Chip label={task.due} size="small" />
+          <Chip
+            label={
+              task.due
+                ? new Date(task.due).toLocaleDateString("en-GB", {
+                    day: "2-digit",
+                    month: "short",
+                  })
+                : "—"
+            }
+            size="small"
+          />
           <Chip
             label={task.status}
             size="small"
@@ -96,7 +106,15 @@ const TaskCard: React.FC<TaskCardProps> = ({
           />
         </Box>
 
-        <Box sx={{ mt: 2, display: "flex", alignItems: "center", gap: 1, flexWrap: "wrap" }}>
+        <Box
+          sx={{
+            mt: 2,
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+            flexWrap: "wrap",
+          }}
+        >
           {onUpdateStatus && (
             <Select
               value={task.status}

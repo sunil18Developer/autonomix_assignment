@@ -5,6 +5,6 @@ export interface Task {
   owner: string;
   priority: "Low" | "Medium" | "High";
   due: string | null;
-  status: "Pending" | "In Progress" | "Completed" | "To Do" | "Blocked";
+  status: "Pending" | "InProgress" | "Completed" | "ToDo" | "Blocked";
   createdAt: number;
 }
