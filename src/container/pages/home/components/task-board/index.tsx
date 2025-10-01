@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Task } from "@/types";
 import { PieChart, Pie, Cell, Tooltip } from "recharts";
 import { Box, Typography } from "@mui/material";
-import TaskCard from "@/components/task-card";
+import TaskBoardColumns from "../task-board-columns";
 
 interface Props {
   initialTasks: Task[];
@@ -10,13 +10,13 @@ interface Props {
 
 const COLORS = ["#FF8042", "#0088FE", "#00C49F"];
 
-const TaskList: React.FC<Props> = ({ initialTasks }) => {
+const TaskBoard: React.FC<Props> = ({ initialTasks }) => {
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
 
-  const handleToggleComplete = (index: number) => {
+  const handleToggleComplete = (id: string) => {
     setTasks((prev) =>
-      prev.map((task, i) =>
-        i === index
+      prev.map((task) =>
+        task.id === id
           ? {
               ...task,
               status: task.status === "Completed" ? "Pending" : "Completed",
@@ -26,23 +26,14 @@ const TaskList: React.FC<Props> = ({ initialTasks }) => {
     );
   };
 
-  const handleDelete = (index: number) => {
-    setTasks((prev) => prev.filter((_, i) => i !== index));
+  const handleDelete = (id: string) => {
+    setTasks((prev) => prev.filter((task) => task.id !== id));
   };
 
   const chartData = [
-    {
-      name: "Pending",
-      value: tasks.filter((t) => t.status === "Pending").length,
-    },
-    {
-      name: "In Progress",
-      value: tasks.filter((t) => t.status === "In Progress").length,
-    },
-    {
-      name: "Completed",
-      value: tasks.filter((t) => t.status === "Completed").length,
-    },
+    { name: "Pending", value: tasks.filter((t) => t.status === "Pending").length },
+    { name: "In Progress", value: tasks.filter((t) => t.status === "In Progress").length },
+    { name: "Completed", value: tasks.filter((t) => t.status === "Completed").length },
   ];
 
   return (
@@ -51,20 +42,21 @@ const TaskList: React.FC<Props> = ({ initialTasks }) => {
         display: "flex",
         flexDirection: { xs: "column", md: "row" },
         gap: 4,
+        width: "100%",
       }}
     >
       <Box sx={{ flex: 1 }}>
-        <Typography variant="h5" fontWeight={600} mb={2}>
-          Action Items
+        <Typography variant="h4" fontWeight={700} mb={3}>
+          Tasks Board
         </Typography>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-          {tasks.map((task, index) => (
-            <TaskCard key={task.id} task={task} />
-          ))}
-        </Box>
+        <TaskBoardColumns
+          tasks={tasks}
+          onToggleComplete={handleToggleComplete}
+          onDelete={handleDelete}
+        />
       </Box>
 
-      <Box sx={{ width: { xs: "100%", md: 300 } }}>
+      <Box sx={{ width: { xs: "100%", md: 300 }, flexShrink: 0 }}>
         <Typography variant="h5" fontWeight={600} mb={2}>
           Task Status
         </Typography>
@@ -79,10 +71,7 @@ const TaskList: React.FC<Props> = ({ initialTasks }) => {
             label
           >
             {chartData.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={COLORS[index % COLORS.length]}
-              />
+              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
             ))}
           </Pie>
           <Tooltip />
@@ -92,4 +81,4 @@ const TaskList: React.FC<Props> = ({ initialTasks }) => {
   );
 };
 
-export default TaskList;
+export default TaskBoard;

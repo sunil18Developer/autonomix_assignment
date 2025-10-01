@@ -1,13 +1,12 @@
 "use client";
-
 import React, { useState } from "react";
-import { Box, Button, TextField, IconButton, Typography, Container } from "@mui/material";
+import { Box, Button, TextField, IconButton, Typography } from "@mui/material";
 import { Brightness4, Brightness7 } from "@mui/icons-material";
 import { useThemeMode } from "@/app/theme-registry";
 import { Task } from "@/types";
 import { v4 as uuidv4 } from "uuid";
-import TaskList from "@/container/pages/home/components/task-list";
 import mockTasks from "@/data";
+import TaskBoard from "./components/task-board";
 
 export default function HomePage() {
   const [transcript, setTranscript] = useState("");
@@ -30,12 +29,12 @@ export default function HomePage() {
       },
     ];
 
-    setTasks(newTasks);
+    setTasks((prev) => [...prev, ...newTasks]);
     setTranscript("");
   };
 
   return (
-    <Container maxWidth="md" sx={{ mt: 5, mb: 5 }}>
+    <Box sx={{ width: "100%", px: 2, py: 4 }}>
       <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 3 }}>
         <IconButton color="inherit" onClick={toggleMode}>
           {mode === "light" ? <Brightness4 /> : <Brightness7 />}
@@ -46,7 +45,19 @@ export default function HomePage() {
         Meeting Task Generator
       </Typography>
 
-      <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexDirection: "column", gap: 2, mb: 4 }}>
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+          mb: 4,
+          width: "100%",
+          maxWidth: "1200px",
+          mx: "auto",
+        }}
+      >
         <TextField
           label="Enter Meeting Transcript"
           multiline
@@ -56,12 +67,22 @@ export default function HomePage() {
           variant="outlined"
           fullWidth
         />
-        <Button type="submit" variant="contained" color="primary" size="large" sx={{ alignSelf: "flex-end" }}>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          size="large"
+          sx={{ alignSelf: "flex-end" }}
+        >
           Generate Tasks
         </Button>
       </Box>
 
-      {tasks.length > 0 && <TaskList initialTasks={tasks} />}
-    </Container>
+      {tasks.length > 0 && (
+        <Box sx={{ width: "100%" }}>
+          <TaskBoard initialTasks={tasks} />
+        </Box>
+      )}
+    </Box>
   );
 }
