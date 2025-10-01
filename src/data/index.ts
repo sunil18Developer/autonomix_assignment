@@ -49,7 +49,7 @@ const mockTasks: Task[] = [
     owner: "Maria",
     priority: "High",
     due: "Next Tuesday",
-    status: "Pending",
+    status: "Completed",
   },
   {
     id: "6",
@@ -60,6 +60,25 @@ const mockTasks: Task[] = [
     priority: "Low",
     due: "Backlog",
     status: "Pending",
+  },
+  {
+    id: "7",
+    title: "Finalize project budget allocation",
+    description:
+      "Approve the final budget and submit for CFO review before end of month.",
+    owner: "Alex",
+    priority: "High",
+    due: "Friday",
+    status: "Completed",
+  },
+  {
+    id: "8",
+    title: "Optimize database queries",
+    description: "Reduce load times by improving SQL queries for reporting tables.",
+    owner: "Alex",
+    priority: "Medium",
+    due: "Next Wednesday",
+    status: "In Progress",
   },
 ];
 

@@ -16,6 +16,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 interface TaskCardProps {
   task: Task;
   onUpdateStatus?: (status: Task["status"]) => void;
+  onUpdatePriority?: (priority: Task["priority"]) => void;
   onDelete?: () => void;
 }
 
@@ -53,6 +54,7 @@ const priorityColor = (priority: string) => {
 const TaskCard: React.FC<TaskCardProps> = ({
   task,
   onUpdateStatus,
+  onUpdatePriority,
   onDelete,
 }) => {
   return (
@@ -93,7 +95,8 @@ const TaskCard: React.FC<TaskCardProps> = ({
             color={statusColor(task.status)}
           />
         </Box>
-        <Box sx={{ mt: 2, display: "flex", alignItems: "center", gap: 1 }}>
+
+        <Box sx={{ mt: 2, display: "flex", alignItems: "center", gap: 1, flexWrap: "wrap" }}>
           {onUpdateStatus && (
             <Select
               value={task.status}
@@ -105,6 +108,21 @@ const TaskCard: React.FC<TaskCardProps> = ({
               <MenuItem value="Completed">Completed</MenuItem>
             </Select>
           )}
+
+          {onUpdatePriority && (
+            <Select
+              value={task.priority}
+              size="small"
+              onChange={(e) =>
+                onUpdatePriority(e.target.value as Task["priority"])
+              }
+            >
+              <MenuItem value="Low">Low</MenuItem>
+              <MenuItem value="Medium">Medium</MenuItem>
+              <MenuItem value="High">High</MenuItem>
+            </Select>
+          )}
+
           {onDelete && (
             <IconButton size="small" color="error" onClick={onDelete}>
               <DeleteIcon fontSize="small" />
