@@ -1,10 +1,11 @@
 "use client";
 import React, { useState } from "react";
 import { Box, Button, TextField, IconButton, Typography } from "@mui/material";
-import { Brightness4, Brightness7 } from "@mui/icons-material";
+import { Brightness4, Brightness7, History } from "@mui/icons-material";
 import { useThemeMode } from "@/app/theme-registry";
 import { Task } from "@/types";
 // import mockTasks from "@/data";
+import Link from "next/link";
 import TaskBoard from "./components/task-board";
 import api from "@/config/api-config";
 import { endPoints } from "@/config/api-config/end-points";
@@ -64,10 +65,15 @@ export default function HomePage() {
 
   return (
     <Box sx={{ width: "100%", px: 2, py: 4 }}>
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 3 }}>
+      <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mb: 3 }}>
         <IconButton color="inherit" onClick={toggleMode}>
           {mode === "light" ? <Brightness4 /> : <Brightness7 />}
         </IconButton>
+        <Link href="/history-tasks" passHref legacyBehavior>
+          <Button variant="contained" startIcon={<History />}>
+            Task History
+          </Button>
+        </Link>
       </Box>
 
       <Typography variant="h4" fontWeight={700} gutterBottom textAlign="center">
