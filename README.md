@@ -1,5 +1,11 @@
 # Autonomix App
 
+
+<img width="1920" height="1080" alt="Screenshot 2025-10-01 at 3 10 19 PM" src="https://github.com/user-attachments/assets/3fde7236-941b-4e6d-99e8-a98d0e61f920" />
+
+<img width="1920" height="1080" alt="Screenshot 2025-10-01 at 3 10 36 PM" src="https://github.com/user-attachments/assets/732c4d2f-488b-4bdc-b627-4076c43d988a" />
+
+
 ## Level Completed
 Level: **2** <!-- Replace with 1, 2, or 3 depending on what you completed -->
 
